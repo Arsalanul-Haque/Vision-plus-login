@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vision Plus Login</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#00b6f1,#87CEEB);
+}
+
+.container{
+width:380px;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,0.2);
+}
+
+.logo{
+text-align:center;
+font-size:30px;
+font-weight:bold;
+color:#00b6f1;
+margin-bottom:20px;
+}
+
+h2{
+text-align:center;
+margin-bottom:20px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin-bottom:12px;
+border:1px solid #ddd;
+border-radius:8px;
+outline:none;
+}
+
+input:focus{
+border-color:#00b6f1;
+}
+
+button{
+width:100%;
+padding:12px;
+border:none;
+background:#00b6f1;
+color:white;
+font-size:16px;
+border-radius:8px;
+cursor:pointer;
+}
+
+button:hover{
+background:#009fd4;
+}
+
+.links{
+text-align:center;
+margin-top:15px;
+}
+
+.links a{
+color:#00b6f1;
+text-decoration:none;
+display:block;
+margin-top:8px;
+}
+
+#signupBox{
+display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="logo">
+👓 Vision Plus
+</div>
+
+<!-- LOGIN -->
+
+<div id="loginBox">
+
+<h2>Login</h2>
+
+<input
+type="email"
+id="loginEmail"
+placeholder="Email">
+
+<input
+type="password"
+id="loginPassword"
+placeholder="Password">
+
+<button onclick="loginUser()">
+Login
+</button>
+
+<div class="links">
+
+<a href="#"
+onclick="forgotPassword()">
+Forgot Password?
+</a>
+
+<a href="#"
+onclick="showSignup()">
+Create New Account
+</a>
+
+</div>
+
+</div>
+
+<!-- SIGNUP -->
+
+<div id="signupBox">
+
+<h2>Create Account</h2>
+
+<input
+type="text"
+id="signupName"
+placeholder="Full Name">
+
+<input
+type="email"
+id="signupEmail"
+placeholder="Email">
+
+<input
+type="password"
+id="signupPassword"
+placeholder="Password">
+
+<button onclick="signupUser()">
+Create Account
+</button>
+
+<div class="links">
+
+<a href="#"
+onclick="showLogin()">
+Already have an account? Login
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function showSignup(){
+
+document.getElementById(
+"loginBox"
+).style.display="none";
+
+document.getElementById(
+"signupBox"
+).style.display="block";
+
+}
+
+function showLogin(){
+
+document.getElementById(
+"signupBox"
+).style.display="none";
+
+document.getElementById(
+"loginBox"
+).style.display="block";
+
+}
+
+function signupUser(){
+
+const name=
+document.getElementById(
+"signupName"
+).value;
+
+const email=
+document.getElementById(
+"signupEmail"
+).value;
+
+const password=
+document.getElementById(
+"signupPassword"
+).value;
+
+if(!name||!email||!password){
+
+alert("Please fill all fields");
+
+return;
+
+}
+
+const users=
+JSON.parse(
+localStorage.getItem("users")
+)||[];
+
+const exists=
+users.find(
+u=>u.email===email
+);
+
+if(exists){
+
+alert(
+"Account already exists"
+);
+
+return;
+
+}
+
+users.push({
+
+name:name,
+email:email,
+password:password
+
+});
+
+localStorage.setItem(
+"users",
+JSON.stringify(users)
+);
+
+alert(
+"Account Created Successfully"
+);
+
+showLogin();
+
+}
+
+function loginUser(){
+
+const email=
+document.getElementById(
+"loginEmail"
+).value;
+
+const password=
+document.getElementById(
+"loginPassword"
+).value;
+
+const users=
+JSON.parse(
+localStorage.getItem("users")
+)||[];
+
+const user=
+users.find(
+u=>
+u.email===email &&
+u.password===password
+);
+
+if(user){
+
+localStorage.setItem(
+"loggedInUser",
+JSON.stringify(user)
+);
+
+alert(
+"Login Successful"
+);
+
+window.location.href=
+"xyz.html";
+
+}else{
+
+alert(
+"Wrong Email or Password"
+);
+
+}
+
+}
+
+function forgotPassword(){
+
+const email=
+prompt(
+"Enter your registered email"
+);
+
+if(!email) return;
+
+const users=
+JSON.parse(
+localStorage.getItem("users")
+)||[];
+
+const user=
+users.find(
+u=>u.email===email
+);
+
+if(user){
+
+alert(
+"Your Password is: "
++ user.password
+);
+
+}else{
+
+alert(
+"Email not found"
+);
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
